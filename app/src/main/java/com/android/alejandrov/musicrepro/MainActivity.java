@@ -22,6 +22,9 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
     private TextView time;
     private ProgressBar progrestime;
     private Reproductor reproductor;
+    final int HOUR = 60*60*1000;
+    final int MINUTE = 60*1000;
+    final int SECOND = 1000;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +43,14 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
         stop.setEnabled(false);
 
         time= (TextView) findViewById(R.id.tv_time);
-        time.setText(Reproductor.duration + "\n");
+
+        int durationInMillis = Reproductor.duration;
+        int durationHour = durationInMillis/HOUR;
+        int durationMint = (durationInMillis%HOUR)/MINUTE;
+        int durationSec = (durationInMillis%MINUTE)/SECOND;
+
+
+        time.setText(String.format("%02d:%02d:%02d",durationHour,durationMint,durationSec));
     }
 
     private ServiceConnection conn = new ServiceConnection() {
@@ -124,8 +134,8 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
         final int MINUTE = 60*1000;
         final int SECOND = 1000;
 
-        int durationInMillis = mediaPlayer.getDuration();
-        int curVolume = mediaPlayer.getCurrentPosition();
+        int durationInMillis = Reproductor.duration;
+       // int curVolume = mp.getCurrentPosition();
 
         int durationHour = durationInMillis/HOUR;
         int durationMint = (durationInMillis%HOUR)/MINUTE;
